@@ -18,6 +18,11 @@ jobs:
         mkdir -p app/src/main/res/values
         mkdir -p app/src/main/res/mipmap-mdpi
 
+    - name: Clean Old Duplicate Icons
+      run: |
+        # حذف أي أيقونات قديمة مكررة في المستودع لمنع تعارض الـ Duplicate resources
+        rm -rf app/src/main/res/mipmap-*/*ic_launcher*
+
     - name: Generate Configuration Files
       run: |
         echo "include ':app'" > settings.gradle
@@ -28,15 +33,12 @@ jobs:
 
     - name: Setup Android Manifest and Code
       run: |
-        # 1. إنشاء ملف Manifest القياسي مع تعريف الأيقونة والاسم لضمان الظهور في الشاشة الرئيسية
         echo -e '<?xml version="1.0" encoding="utf-8"?>\n<manifest xmlns:android="http://schemas.android.com/apk/res/android">\n    <application\n        android:allowBackup="true"\n        android:icon="@mipmap/ic_launcher"\n        android:label="Fleet Productivity">\n        <activity\n            android:name="com.example.fleetproductivity.MainActivity"\n            android:exported="true">\n            <intent-filter>\n                <action android:name="android.intent.action.MAIN" />\n                <category android:name="android.intent.action.LAUNCHER" />\n            </intent-filter>\n        </activity>\n    </application>\n</manifest>' > app/src/main/AndroidManifest.xml
 
-        # 2. إنشاء كود الواجهة البرمجية النظيف
         echo -e 'package com.example.fleetproductivity;\nimport android.app.Activity;\nimport android.os.Bundle;\nimport android.widget.TextView;\nimport android.view.Gravity;\npublic class MainActivity extends Activity {\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        TextView textView = new TextView(this);\n        textView.setText("Fleet Productivity App is Working!");\n        textView.setTextSize(24);\n        textView.setGravity(Gravity.CENTER);\n        setContentView(textView);\n    }\n}' > app/src/main/java/com/example/fleetproductivity/MainActivity.java
 
-    - name: Generate Temporary XML Icon
+    - name: Generate Clean XML Icon
       run: |
-        # إنشاء ملف أيقونة وهمي وبسيط بصيغة XML ليتعرف عليه أندرويد أثناء التثبيت ولا يختفي التطبيق
         echo -e '<?xml version="1.0" encoding="utf-8"?>\n<vector xmlns:android="http://schemas.android.com/apk/res/android"\n    android:width="108dp"\n    android:height="108dp"\n    android:viewportWidth="108"\n    android:viewportHeight="108">\n    <path\n        android:fillColor="#00BCD4"\n        android:pathData="M0,0h108v108h-108z"/>\n</vector>' > app/src/main/res/mipmap-mdpi/ic_launcher.xml
 
     - name: Set up JDK 17
@@ -59,4 +61,3 @@ jobs:
       with:
         name: app-debug
         path: app/build/outputs/apk/debug/app-debug.apk
-
