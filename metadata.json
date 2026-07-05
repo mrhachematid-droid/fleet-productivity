@@ -1,0 +1,6 @@
+{
+  "name": "Fleet Productivity",
+  "description": "Professional Fleet Productivity Analysis app to track truck cycles, loading, travel, unloading, driver & truck rankings, shift comparisons, and generate PDF reports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
